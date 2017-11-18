@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "react happyplace webapp",
+  "main": "backend.js",
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "author": "mwdowns",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "http": "0.0.0",
+    "nodemon": "^1.12.1",
+    "pg-promise": "^7.3.1",
+    "uuid": "^3.1.0"
+  }
+}
