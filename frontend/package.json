@@ -6,8 +6,10 @@
     "react-scripts": "1.0.17"
   },
   "dependencies": {
+    "google-maps-react": "^1.1.2",
     "react": "^16.1.1",
-    "react-dom": "^16.1.1"
+    "react-dom": "^16.1.1",
+    "react-router-dom": "^4.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
