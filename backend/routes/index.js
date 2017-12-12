@@ -5,6 +5,63 @@ router = express.Router(),
 db = pgp('happyplace_db');    
 
 
+router.post('/createuser', function(req, res) {
+    // use bcrypt to hash password when storing it
+});
+
+router.get('/login', function(req, res) {
+    // use bcrypt to check supplied password against what's stored in db
+});
+
+router.get('/getuserinfo/:username', function(req, res) {
+    let username = req.params.username;
+    db.query('SELECT * FROM hp_user WHERE username = $1', username)
+    .then(data => {
+        res.json({user_data: data});
+    })
+    .catch(error => {
+        res.json({error: error});
+    })
+});
+
+router.post('/updateuserinfo', function(req, res) {
+    let username = req.body.username;
+    let fields = ['email', 'password', 'first_name', 'last_name']
+    let fieldsToUpdate = [];
+    let user_updates = [req.body.email, req.body.password, req.body.firstName, req.body.lastName];
+    updates = user_updates.filter(function(data, index) {
+        if (data !== '') {
+            fieldsToUpdate.push(fields[index]);
+            return data;
+        }
+    });
+    let queries = [];
+    if (fieldsToUpdate.length === updates.length) {
+        db.task('update-user', t=> {
+            let updateLen = fieldsToUpdate.length;
+            for (var i = 0; i < updateLen; i++) {
+                queries.push(t.any('UPDATE hp_user SET $1 = $2 WHERE username = $3', [fieldsToUpdate[i], updates[i], username]));
+            }
+            return t.batch(queries);
+        })
+        .then(data => {
+            res.json({message: 'updated'});
+        })
+        .catch(error => {
+            res.json({error: error});
+        })
+    } else {
+        console.log('something went wrong');
+    }
+
+});
+
+router.post('/deleteuser', function(req, res) {
+    // this on is complicated because we need to delete happyplaces associated with the user as well
+    // first thing should select all the ids of hp_location entries associated with user and creates an array of ids
+    // then after deleting the user, go through that array of ids and delete those happyplaces
+});
+
 router.get('/worldhappyplaces', function(req, res) {
     db.query('SELECT hp_user.username, lat, lng, message FROM hp_user, user_links_location, hp_location WHERE hp_user.id = user_links_location.user_id AND hp_location.id = user_links_location.location_id;')
     .then(data => {
