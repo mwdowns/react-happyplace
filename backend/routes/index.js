@@ -56,4 +56,27 @@ router.post('/createhappyplace', function(req, res) {
     })
 });
 
+router.post('/updatehappyplace', function(req, res) {
+    let location_id = req.body.location_id,
+        new_message = req.body.new_message;
+    db.query('UPDATE hp_location SET message = $1 WHERE id = $2 RETURNING message', [new_message, location_id])
+    .then(data => {
+        res.json({updated_message: data[0].message})
+    })
+    .catch(error => {
+        res.json({error: error});
+    })
+})
+
+router.post('/deletehappyplace', function(req, res) {
+    let location_id = req.body.location_id;
+    db.query('DELETE FROM hp_location WHERE id = $1', location_id)
+    .then(() => {
+        res.json({message: 'happyplace deleted'});
+    })
+    .catch(error => {
+        res.json({error: error});
+    })
+})
+
 module.exports = router;
