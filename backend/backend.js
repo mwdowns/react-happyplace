@@ -1,6 +1,6 @@
 const express = require('express'),
 bodyParser = require('body-parser'),
-bcrypt = require('bcrypt'),
+// bcrypt = require('bcrypt'),
 uuid = require('uuid'),
 pgp = require('pg-promise')(),
 dotenv = require('dotenv').config(),
